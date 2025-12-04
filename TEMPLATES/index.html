@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Kitchen Inventory SWAPNIL</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-box {
+            background: white;
+            padding: 20px;
+            width: 350px;
+            margin: auto;
+            border-radius: 8px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: green;
+            color: white;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        a {
+            color: red;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Smart Kitchen Inventory Management System SWAPNIL BBDITM</h2>
+
+<div class="form-box">
+    <form action="/add" method="POST">
+        <label>Item Name</label>
+        <input type="text" name="name" required>
+
+        <label>Quantity</label>
+        <input type="number" name="quantity" required>
+
+        <label>Category</label>
+        <select name="category">
+            <option>Vegetables</option>
+            <option>Spices</option>
+            <option>Dairy</option>
+            <option>Frozen</option>
+            <option>Non - Veg</option>
+            <option>Other</option>
+        </select>
+
+        <button type="submit">Add Item</button>
+    </form>
+</div>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Qty</th>
+        <th>Category</th>
+        <th>Action</th>
+    </tr>
+
+    {% for item in items %}
+    <tr>
+        <td>{{item[0]}}</td>
+        <td>{{item[1]}}</td>
+        <td>{{item[2]}}</td>
+        <td>{{item[3]}}</td>
+        <td><a href="/delete/{{item[0]}}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
