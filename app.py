@@ -1,15 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import mysql.connector
+import os   # <-- needed for environment variables
 
 app = Flask(__name__)
 app.secret_key = "12345"  # any random string
 
-# Database connection
+# Database connection (using environment variables)
 db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "swapnil135",  # <-- put your MySQL password here
-    "database": "kitchen_inventory"
+    "host": os.getenv("HOST"),
+    "user": os.getenv("USER"),
+    "password": os.getenv("PASSWORD"),
+    "database": os.getenv("DATABASE"),
+    "port": os.getenv("PORT")
 }
 
 def get_db_connection():
@@ -61,3 +63,4 @@ def delete_item(id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
