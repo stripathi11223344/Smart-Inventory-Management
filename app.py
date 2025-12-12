@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import session
+  # you already have, keep any value
+
 import mysql.connector
 import os   # <-- needed for environment variables
 
@@ -20,6 +23,9 @@ def get_db_connection():
 # Home page — show all items
 @app.route('/')
 def index():
+    if not session.get('logged_in'):
+        return redirect('/login')
+
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM items ORDER BY id DESC")
@@ -47,6 +53,29 @@ def add_item():
 
     flash("Item added successfully!")
     return redirect(url_for('index'))
+# GET ITEM TO UPDATE
+@app.route('/update_quantity/<int:id>', methods=['GET'])
+def update_quantity(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM items WHERE id=%s", (id,))
+    item = cursor.fetchone()
+    conn.close()
+    return render_template('update_quantity.html', item=item)
+
+# UPDATE LOADED ITEM
+@app.route('/update_quantity/<int:id>', methods=['POST'])
+def update_quantity_post(id):
+    quantity = request.form['quantity']
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE items SET quantity=%s WHERE id=%s", (quantity, id))
+    conn.commit()
+    conn.close()
+
+    return redirect('/')
+
 
 # Delete item
 @app.route('/delete/<int:id>')
@@ -60,6 +89,31 @@ def delete_item(id):
 
     flash("Item deleted successfully!")
     return redirect(url_for('index'))
+
+# LOGIN
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+
+        # SIMPLE LOGIN (you can change username/password)
+        if username == "SWAPNIL" and password == "BBDGROUP123":
+            session['logged_in'] = True
+            return redirect('/')
+        else:
+            return render_template("login.html", error="Invalid username or password")
+
+    return render_template("login.html")
+
+# LOGOUT
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect('/login')
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

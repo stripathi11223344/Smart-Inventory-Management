@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Smart Kitchen Inventory SWAPNIL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
     <style>
         body {
             font-family: Arial;
@@ -50,8 +52,12 @@
     </style>
 </head>
 <body>
+    
+
 
 <h2>Smart Kitchen Inventory Management System SWAPNIL BBDITM</h2>
+<a href="/logout" style="float:right; margin:10px; color:blue;">Logout</a>
+
 
 <div class="form-box">
     <form action="/add" method="POST">
@@ -81,6 +87,7 @@
         <th>Name</th>
         <th>Qty</th>
         <th>Category</th>
+        <th>Action </th>
         <th>Action</th>
     </tr>
 
@@ -90,7 +97,10 @@
         <td>{{item[1]}}</td>
         <td>{{item[2]}}</td>
         <td>{{item[3]}}</td>
+        <td><a href="/update_quantity/{{ item[0] }}" class="btn-update">Update Qty</a></td>
         <td><a href="/delete/{{item[0]}}">Delete</a></td>
+        
+
     </tr>
     {% endfor %}
 </table>

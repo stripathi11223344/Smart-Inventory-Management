@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Quantity</title>
+</head>
+<body>
+
+    <h2>Update Quantity</h2>
+
+    <form action="/update_quantity/{{ item[0] }}" method="POST">
+        <label>Current Quantity: {{ item[2] }}</label><br><br>
+
+        <label>New Quantity:</label>
+        <input type="number" name="quantity" required><br><br>
+
+        <button type="submit">Update</button>
+    </form>
+
+</body>
+</html>
